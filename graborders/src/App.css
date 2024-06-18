@@ -264,6 +264,8 @@ td {
 }
 .advertise__header {
   width: 100dvw;
+  max-width: 500px;
+  margin: auto;
   display: flex;
   overflow: hidden;
 }
@@ -291,6 +293,8 @@ td {
 
 .image {
   width: 100dvw;
+  max-width: 500px;
+  margin: auto;
   height: auto;
 }
 
@@ -697,7 +701,8 @@ td {
   border: 1px solid #cfd1d5;
   border-radius: 10px;
   width: 100%;
-
+  max-width: 500px;
+  margin: auto;
   padding: 15px 10px;
 }
 
@@ -753,6 +758,8 @@ td {
   padding: 10px 20px;
   margin: 20px 0;
   border-radius: 10px;
+  max-width: 500px;
+  margin: auto;
 }
 
 .button__upgrade {
@@ -823,6 +830,9 @@ td {
   padding: 10px;
   padding: 20px;
   border-radius: 10px;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 20px;
 }
 
 li {
@@ -1093,6 +1103,8 @@ img {
 .home__section {
   padding-left: 2%;
   padding-right: 2%;
+  max-width: 500px;
+  margin: auto;
 }
 
 /* Styling the grapPage */
@@ -2363,6 +2375,8 @@ button:disabled {
   height: 100%;
 position: fixed;
 z-index: 100;
+left: 0;
+margin: auto;
 
 }
 
