@@ -1051,7 +1051,7 @@ img {
   padding-left: 
   500px;
   display: inline-block;
-  animation: marquee 15s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 @keyframes marquee {

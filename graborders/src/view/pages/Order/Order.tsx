@@ -77,7 +77,7 @@ function Portfolio() {
             </div>
             <div className="cadre__detail">
               <div>Commission</div>
-              <div>{item?.product?.commission} </div>
+              <div>{item?.product?.commission}% </div>
             </div>
             <div className="cadre__detail">
               <div>Estimated return</div>

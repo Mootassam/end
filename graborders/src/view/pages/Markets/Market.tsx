@@ -237,11 +237,11 @@ function Market() {
                         </div>
                         <div className="vip__description">
                           <div className="description__key">
-                            Comimsion rate:
+                          Commission rate:
                           </div>
                           <div className="description__value">
                             {" "}
-                            {item.comisionrate}
+                            {item.comisionrate}%
                           </div>
                         </div>
                       </div>
@@ -269,7 +269,7 @@ function Market() {
                   Daily order: {selectedItem?.dailyorder}
                 </div>
                 <div style={{ fontSize: 20 }}>
-                  Commission Rate: {selectedItem?.comisionrate}
+                  Commission Rate: {selectedItem?.comisionrate}%
                 </div>
               </div>
               <div className="badge__ pending">

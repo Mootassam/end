@@ -27,6 +27,7 @@ function Wallet() {
       erc20: "" || currentUser.erc20,
       walletname: "" || currentUser.walletname,
       usernamewallet: "" || currentUser.usernamewallet,
+      balance : currentUser?.balance
     };
   });
   const form = useForm({
@@ -40,6 +41,7 @@ function Wallet() {
       trc20: trc20,
       walletname: walletname,
       usernamewallet: usernamewallet,
+      balance:currentUser.balance
     };
     dispatch(actions.doUpdateProfile(values));
   };
