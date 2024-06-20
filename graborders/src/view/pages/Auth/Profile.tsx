@@ -237,6 +237,20 @@ function Profile() {
             My Details
           </label>
           <div className="detail__section">
+
+
+          <Link to="/online" className="remove__ligne">
+              <div className="line__section border__">
+                <div className="titre__section">
+                <i className="fa-solid fa-headphones"></i>
+                  <span>Contact us</span>
+                </div>
+                <div>
+                  <i className="fa fa-arrow-right " />
+                </div>
+              </div>
+            </Link>
+
             <Link to="/myprofile" className="remove__ligne">
               <div className="line__section border__">
                 <div className="titre__section">

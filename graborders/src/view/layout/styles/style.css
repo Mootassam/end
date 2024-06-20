@@ -44,7 +44,7 @@
 /* styles the tabbarBottom */
 .tabbottomNavigator {
   position: fixed;
-  background-color: #FFB6C1;
+  background-color:whitesmoke;
   border-top-left-radius: 19px;
   border-top-right-radius: 19px;
   border-top: 2px solid #afafaa;
@@ -73,7 +73,6 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  color: white;
 }
 
 .left__header {
