@@ -112,7 +112,7 @@ function Market() {
   };
 
   const [currentImage, setCurrentImage] = useState(0);
-  const images = ["/images/sub__heading.png"];
+  const images = ["https://koozaimarketing.com/member/assets/images/01.gif"];
 
   useEffect(() => {});
 
