@@ -93,14 +93,14 @@ function CouponsListTable(props) {
   };
 
   const changeFunction = (status) => {
-    let data 
-    switch(status) {
-      case "pending":
-        return "pending";
-      case "canceled":
-        return "canceled";
+    let data;
+    switch (status) {
+      case 'pending':
+        return 'pending';
+      case 'canceled':
+        return 'canceled';
       default:
-        return "completed";
+        return 'completed';
     }
   };
   return (
@@ -133,9 +133,7 @@ function CouponsListTable(props) {
                 hasRows={hasRows}
                 sorter={sorter}
                 name={'title'}
-                label={i18n(
-                  'entities.record.fields.user',
-                )}
+                label={i18n('entities.record.fields.user')}
               />
               <TableColumnHeader
                 onSort={doChangeSort}
@@ -190,7 +188,7 @@ function CouponsListTable(props) {
             {!loading &&
               rows.map((row) => (
                 <tr key={row.id}>
-                  <th className="th-checkbox" scope="row" >
+                  <th className="th-checkbox" scope="row">
                     <div className="adherent-control adherent-checkbox">
                       <input
                         type="checkbox"
@@ -211,20 +209,24 @@ function CouponsListTable(props) {
                       </label>
                     </div>
                   </th>
-                  <td  style={{ textAlign: 'center' }}>
-                  <UserListItem  value={row.user}/>
+                  <td style={{ textAlign: 'center' }}>
+                    <UserListItem value={row.user} />
                   </td>
                   <td style={{ textAlign: 'center' }}>
-                  <ProductListItem value={row.product} />
+                    <ProductListItem value={row.product} />
                   </td>
-                  
+
                   <td style={{ textAlign: 'center' }}>
                     {row.number}
                   </td>
                   <td style={{ textAlign: 'center' }}>
-  <span className={changeFunction(row.status)}>  {row.status}</span>
-
-</td>
+                    <span
+                      className={changeFunction(row.status)}
+                    >
+                      {' '}
+                      {row.status}
+                    </span>
+                  </td>
                   <td className="td-actions">
                     <Link
                       className="btn btn-link"
