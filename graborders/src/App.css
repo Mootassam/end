@@ -1468,8 +1468,7 @@ button:disabled {
   position: fixed;
   z-index: 200;
   top: 0;
-
-  /* Shadow effect */
+  left: 0;
 }
 
 .modal__product {

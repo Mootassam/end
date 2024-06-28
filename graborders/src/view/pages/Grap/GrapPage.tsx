@@ -9,7 +9,6 @@ import Dates from "src/view/shared/utils/Dates";
 import recordActions from "src/modules/record/form/recordFormActions";
 import recordListAction from "src/modules/record/list/recordListActions";
 import recordSelector from "src/modules/record/list/recordListSelectors";
-import sound from "/Audio/slots.mp3";
 import Image from "src/shared/Images";
 import { useHistory } from "react-router-dom";
 import authActions from "src/modules/auth/authActions";
@@ -41,38 +40,14 @@ const Grappage = () => {
 
   const error = useSelector(recordSelector.selectError);
 
-  const refreshItems = useCallback(() => {
-    dispatch(authActions.doRefreshCurrentUser());
-    dispatch(recordListAction.doFetch());
-    dispatch(actions.doFetch());
-  
+  const refreshItems = useCallback(async () => {
+    await dispatch(actions.doFetch());
+   await dispatch(recordListAction.doFetch());
+   await dispatch(authActions.doRefreshCurrentUser());
+
   }, [dispatch]);
 
-  const roll = useCallback(async (reel, offset = 0) => {
-    const delta =
-      (offset + 2) * numIcons + Math.round(Math.random() * numIcons);
 
-    const style = getComputedStyle(reel);
-    const backgroundPositionY = parseFloat(style["background-position-y"]);
-    const targetBackgroundPositionY = backgroundPositionY + delta * iconHeight;
-    const normTargetBackgroundPositionY =
-      targetBackgroundPositionY % (numIcons * iconHeight);
-
-    reel.style.transition = `background-position-y ${
-      (8 + 1 * delta) * timePerIcons
-    }ms cubic-bezier(.41,-0.01,.63,1.09)`;
-    reel.style.backgroundPositionY = `${
-      backgroundPositionY + delta * iconHeight
-    }px`;
-
-    await new Promise((resolve) =>
-      setTimeout(resolve, (8 + 1 * delta) * timePerIcons + offset * 150)
-    );
-
-    reel.style.transition = `none`;
-    reel.style.backgroundPositionY = `${normTargetBackgroundPositionY}px`;
-    return delta % numIcons;
-  }, []);
 
   const displayRandomImage = () => {
     // Function to update the image source
@@ -203,7 +178,7 @@ const Grappage = () => {
       status: items?.combo ? "pending" : "completed",
       user: currentUser.id,
     };
-    dispatch(recordActions.doCreate(values));
+    await dispatch(recordActions.doCreate(values));
     await refreshItems()
     setShowModal(false);
   };
