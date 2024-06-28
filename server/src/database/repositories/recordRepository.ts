@@ -23,7 +23,7 @@ class RecordRepository {
     await this.calculeGrap(data, options);
 
     await User(options.database).updateOne(
-      { _id: currentUser.id }, 
+      { _id: currentUser.id },
       { $set: { tasksDone: currentUser.tasksDone + 1 } }
     );
 
@@ -65,15 +65,18 @@ class RecordRepository {
     const mergeDataPosition = currentUser.itemNumber;
     let total;
 
-    if (currentUser && currentUser.product && currentUser.product.id && Orderdone === mergeDataPosition) {
+    if (
+      currentUser &&
+      currentUser.product &&
+      currentUser.product.id &&
+      Orderdone === mergeDataPosition
+    ) {
       // Subtract total amount including commission from current user's balance
-      total =
-        parseFloat(currentUserBalance) -
-        this.calculeTotalMerge(productBalance, currentCommission);
+      total = parseFloat(currentUserBalance) - parseFloat(productBalance);
     } else {
       // Add total amount including commission to current user's balance
       total =
-      parseFloat(currentUserBalance) + 
+        parseFloat(currentUserBalance) +
         this.calculeTotal(productBalance, currentCommission);
     }
 
@@ -91,20 +94,17 @@ class RecordRepository {
 
   // Removed the static keyword to define a regular function
   static calculeTotal(price, commission) {
-    const total =
-       (parseFloat(price) * parseFloat(commission)) / 100;
+    const total = (parseFloat(price) * parseFloat(commission)) / 100;
     return total;
   }
 
-
-  // Prodcut Minus // 
+  // Prodcut Minus //
 
   static calculeTotalMerge(price, commission) {
-    const total = (parseFloat(price)) +
-       (parseFloat(price) * parseFloat(commission)) / 100;
-    return total; 
+    const total =
+      parseFloat(price) + (parseFloat(price) * parseFloat(commission)) / 100;
+    return total;
   }
-
 
   static async CountOrder(options) {
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -125,8 +125,6 @@ class RecordRepository {
     return data;
   }
 
-
-
   static async tasksDone(currentUser, options) {
     const currentDate = this.getTimeZoneDate(); // Get current date
     const record = await Records(options.database)
@@ -143,8 +141,6 @@ class RecordRepository {
 
     return data;
   }
-
-
 
   static async checkOrder(options) {
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -163,7 +159,7 @@ class RecordRepository {
     if (currentUser && currentUser.vip && currentUser.vip.id) {
       if (currentUser.tasksDone >= dailyOrder) {
         throw new Error405(
-          "This is your limit. Please come back tomorrow to perform more tasks."
+          "You all set. Contact Customer service to reset your account. Always remember to finish 3 sets of tasks per day."
         );
       }
 
@@ -337,9 +333,6 @@ class RecordRepository {
     { filter, limit = 0, offset = 0, orderBy = "" },
     options: IRepositoryOptions
   ) {
-
-    
-
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
     let criteriaAnd: any = [];
@@ -379,7 +372,6 @@ class RecordRepository {
       }
 
       if (filter.status) {
-
         criteriaAnd.push({
           status: {
             $regex: MongooseQueryUtils.escapeRegExp(filter.status),
@@ -418,7 +410,6 @@ class RecordRepository {
     listitems.map((item) => {
       let data = item.product;
       let itemTotal =
-     
         (parseFloat(data.commission) * parseFloat(data.amount)) / 100;
 
       total += itemTotal;
@@ -432,7 +423,6 @@ class RecordRepository {
     { filter, limit = 0, offset = 0, orderBy = "" },
     options: IRepositoryOptions
   ) {
-
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
     let criteriaAnd: any = [];
@@ -441,7 +431,6 @@ class RecordRepository {
       tenant: currentTenant.id,
       user: currentUser.id,
     });
-
 
     const start = new Date();
     start.setHours(0, 0, 0, 0); // Set to the start of the current day
@@ -482,14 +471,13 @@ class RecordRepository {
     listitems.map((item) => {
       let data = item.product;
       let itemTotal =
-     
         (parseFloat(data.commission) * parseFloat(data.amount)) / 100;
 
       total += itemTotal;
     });
     total = parseFloat(total.toFixed(3));
 
-    return {  total };
+    return { total };
   }
 
   static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {
