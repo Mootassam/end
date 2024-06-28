@@ -9,7 +9,12 @@ const authAxios = axios.create({
   // baseURL: "https://www.eclicks-digital.xyz/api/",
 
   // ENd LInk
-  baseURL: "http://172.104.141.32:8080/api",
+  // baseURL: "http://172.104.141.32:8080/api",
+
+  //Blade
+  baseURL: "http://139.162.166.136:8080/api",
+
+
 
   // Richie Link
   // baseURL: "http://139.162.162.106:8080/api",
