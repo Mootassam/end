@@ -1664,6 +1664,7 @@ button:disabled {
 
 .customer__image {
   border-radius: 0px !important;
+  height: auto;
 }
 .header__left {
   display: flex;
