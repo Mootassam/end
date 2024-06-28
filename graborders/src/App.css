@@ -2170,7 +2170,7 @@ button:disabled {
 }
 
 .list__ofproduct > div {
-  height: 120px;
+  height: 110px;
   background-image: radial-gradient(
     circle at 100% 0%,
     rgb(247, 236, 238) 0%,
