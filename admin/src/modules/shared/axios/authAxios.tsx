@@ -1,21 +1,23 @@
 import { AuthToken } from 'src/modules/auth/authToken';
 import Axios from 'axios';
-// import config from 'src/config'; 
+// import config from 'src/config';
 import { getLanguageCode } from 'src/i18n';
 import Qs from 'qs';
 import moment from 'moment';
 
 const authAxios = Axios.create({
   // Louis link
-  // baseURL: 'http://139.162.155.71:8080/api', 
-  
-  // richie Link 
-  baseURL: "http://139.162.162.106:8080/api",
+  // baseURL: 'http://139.162.155.71:8080/api',
+
+  // richie Link
+  // baseURL: "http://139.162.162.106:8080/api",
+
+  // end Link
+  baseURL: 'http://172.104.141.32:8080/api', 
 
   //Local link
-  // baseURL: 'http://192.168.1.43:8080/api',  
+  // baseURL: 'http://192.168.1.43:8080/api',
 
-  
   paramsSerializer: function (params) {
     return Qs.stringify(params, {
       arrayFormat: 'brackets',
