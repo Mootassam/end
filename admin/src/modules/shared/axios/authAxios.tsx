@@ -13,10 +13,10 @@ const authAxios = Axios.create({
   // baseURL: "http://139.162.162.106:8080/api",
 
   // end Link
-  // baseURL: 'http://172.104.141.32:8080/api',
+  baseURL: 'http://172.104.141.32:8080/api',
 
   //Blade
-  baseURL: 'http://139.162.166.136:8080/api',
+  // baseURL: 'http://139.162.166.136:8080/api',
 
   //Local link
   // baseURL: 'http://192.168.1.43:8080/api',
