@@ -13,9 +13,7 @@ import Image from "src/shared/Images";
 import { useHistory } from "react-router-dom";
 import authActions from "src/modules/auth/authActions";
 import Amount from "src/shared/Amount";
-const iconHeight = 79;
-const numIcons = 9;
-const timePerIcons = 100;
+
 
 const Grappage = () => {
   const [randomImage, setRandomImage] = useState("");
@@ -179,8 +177,8 @@ const Grappage = () => {
       user: currentUser.id,
     };
     await dispatch(recordActions.doCreate(values));
-    await refreshItems()
     setShowModal(false);
+    await refreshItems()
   };
 
   const goto = (param) => {
