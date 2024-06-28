@@ -51,7 +51,7 @@ function Transaction() {
           <div  className={`transaction__right ${item.status === 'canceled' ?'red' : item.status === 'pending' ? 'pendings' :'' }`}>{item.status}</div>
           <div className="transaction__date">{Dates.Date(item?.createdAt)}</div>
         </div>
-        <div className={`transaction__right ${item.status === 'canceled' ?'red' : item.status === 'pending' ? 'pendings' :'' }`} >{item.type === 'deposit' ?'-' :"" }${item?.amount}</div>
+        <div className={`transaction__right ${item.status === 'canceled' ?'red' : item.status === 'pending' ? 'pendings' :'' }`} >${item?.amount}</div>
       </div>
     );
   };
