@@ -2036,15 +2036,12 @@ button:disabled {
 }
 
 .loading__page {
-  height: 100px;
-  width: 200px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  z-index: 100;
+  position: fixed; /* Use fixed to keep it centered even if you scroll */
+  top: 50%;        /* Move to the center vertically */
+  left: 50%;  
+  padding: 25px 90px;     /* Move to the center horizontally */
+  transform: translate(-50%, -50%); /* Center it properly */
+  z-index: 100;    /* Keep it above other content */
   display: flex;
   align-items: center;
   justify-content: center;
