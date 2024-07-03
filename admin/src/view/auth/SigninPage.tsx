@@ -10,13 +10,10 @@ import Content from 'src/view/auth/styles/Content';
 import Logo from 'src/view/auth/styles/Logo';
 import OtherActions from 'src/view/auth/styles/OtherActions';
 import Wrapper from 'src/view/auth/styles/Wrapper';
-import I18nFlags from 'src/view/layout/I18nFlags';
 import ButtonIcon from 'src/view/shared/ButtonIcon';
 import InputFormItem from 'src/view/shared/form/items/InputFormItem';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import SocialButtons from 'src/view/auth/styles/SocialButtons';
-import config from 'src/config';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import Message from 'src/view/shared/message';
@@ -173,7 +170,7 @@ function SigninPage() {
                 {i18n('auth.createAnAccount')}
               </Link>
             </OtherActions>
-{/* 
+            {/* 
             <I18nFlags style={{ marginTop: '24px' }} /> */}
           </form>
         </FormProvider>
