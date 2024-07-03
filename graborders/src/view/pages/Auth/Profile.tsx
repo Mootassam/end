@@ -88,7 +88,6 @@ function Profile() {
 
   return (
     <div className="app__profile">
-
       <div className="market__header"></div>
       <div className="profiles__header">
         <div className="header__background"></div>
@@ -113,11 +112,15 @@ function Profile() {
           <div className="score__profile">
             <div className="profile__text"> Credit Score:</div>
             <div className="score__right">
-              <div className="score__level"  style={{
+              <div
+                className="score__level"
+                style={{
                   left: `calc(${
                     currentUser?.score ? currentUser.score : 100
                   }% - 30px)`,
-                }}>                {currentUser?.score ? currentUser.score : 100}%
+                }}
+              >
+                {currentUser?.score ? currentUser.score : 100}%
               </div>
             </div>
           </div>
@@ -131,20 +134,22 @@ function Profile() {
   </div> */}
           <div className="cadre__bottom">
             <div className="firt__cadre">
-              <span className="title__cadre">Wallet Amount</span>
+              <span className="title__cadre">Balance</span>
               <span className="amount__cadre">
                 {currentUser?.balance?.toFixed(2) || 0.0} USDT
               </span>
             </div>
             <div className="second__cadre"></div>
             <div className="">
-              <span className="title__cadre">Daily Profit</span>
+              <span className="title__cadre">Today Profit</span>
               <span className="amount__cadre">{totalperday} USDT </span>
             </div>
             <div className="second__cadre"></div>
             <div>
-              <span className="title__cadre">Total Profit </span>
-              <span className="amount__cadre">{total} USDT</span>
+              <span className="title__cadre">Frozen amount</span>
+              <span className="amount__cadre">
+                {currentUser?.freezeblance?.toFixed(2)} USDT
+              </span>
             </div>
           </div>
         </div>

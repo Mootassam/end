@@ -16,7 +16,6 @@ export default class RecordServices {
     );
 
     try {
-
       const record = await RecordRepository.create(data, {
         ...this.options,
         session,

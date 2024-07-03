@@ -90,15 +90,10 @@ function Market() {
   ];
 
   const submit = (item) => {
-    const balances =
-      parseFloat(currentUser?.balance) - parseFloat(item.levellimit);
-
     const data = {
       vip: item,
-      balance: balances,
     };
-
-    dispatch(actions.doUpdateProfile(data));
+    dispatch(actions.doUpdateProfileMobile(data));
   };
 
   const NewsTicker = ({ text }) => {
@@ -220,29 +215,36 @@ function Market() {
                       />
                     </div>
                     <div className="vip__text">
-                      <div className="vip__title">{item.title}</div>
+                      <div className="vip__title">{item?.title}</div>
+                      <div className="vip__price">USDT {item?.levellimit}</div>
                       <div className="vip__details">
-                        <div className="vip__description">
-                          <div className="description__key">Entry Limit:</div>
-                          <div className="description__value">
-                            {item.levellimit}
-                          </div>
+                        <div>
+                          <strong>● </strong>
+                          {item.comisionrate}% commission per data
                         </div>
+                        <div>
+                          <strong>● </strong>
+                          {item.commissionmergedata}% commission for merge data
+                        </div>
+                        <div>
+                          <strong>● </strong>
+                          Limited to {item.tasksperday} data per set,{" "}
+                          {item?.setperday} sets of data everyday
+                        </div>
+                        {item?.withdrawlimit && (
+                          <div>
+                            <strong>● </strong>
+                            Withdrawal limit: {item?.withdrawlimit}
+                          </div>
+                        )}
 
-                        <div className="vip__description">
-                          <div className="description__key">Daily order:</div>
-                          <div className="description__value">
-                            {item.dailyorder}
-                          </div>
+                        <div>
+                          <strong>● </strong>
+                          {item?.withdrawperday} times of withdrawal
                         </div>
-                        <div className="vip__description">
-                          <div className="description__key">
-                          Commission rate:
-                          </div>
-                          <div className="description__value">
-                            {" "}
-                            {item.comisionrate}%
-                          </div>
+                        <div>
+                          <strong>● </strong>
+                          {item?.handlingfee}% handling fee
                         </div>
                       </div>
                     </div>
@@ -266,7 +268,7 @@ function Market() {
                   Level Limit: {selectedItem?.levellimit}
                 </div>
                 <div style={{ fontSize: 20 }}>
-                  Daily order: {selectedItem?.dailyorder}
+                Data per set: {selectedItem?.dailyorder}
                 </div>
                 <div style={{ fontSize: 20 }}>
                   Commission Rate: {selectedItem?.comisionrate}%
@@ -286,7 +288,7 @@ function Market() {
                     className="submit__product"
                     onClick={() => submit(selectedItem)}
                   >
-                    Submit
+                    Upgrage
                   </div>
                 </div>
               </div>

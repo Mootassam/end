@@ -79,11 +79,9 @@ function UserTable() {
     dispatch(actions.doToggleOneSelected(id));
   };
 
-  const [done, setTasksdone] = useState("")
-  const showThecurrentRecord = async (done, totaltask?) => {
-    setShowTask(true) 
-    setTasksdone(done)
-    // await dispatch(recordListActions.doTasksDone(id));
+  const showThecurrentRecord = async (id, totaltask?) => {
+    setShowTask(true)
+    await dispatch(recordListActions.doTasksDone(id));
     setTotalTasks(totaltask);
   };
 
@@ -93,7 +91,7 @@ function UserTable() {
     <>
       <TableWrapper>
         <div className="table-responsive">
-          <table className="table table-striped     2">
+          <table className="table table-striped 2">
             <thead className="thead">
               <tr>
                 <TableColumnHeader className="th-checkbox">
@@ -148,6 +146,14 @@ function UserTable() {
                   name={'refcode'}
                   label={i18n('user.fields.refcode')}
                 />
+        <TableColumnHeader
+                  onSort={doChangeSort}
+                  hasRows={hasRows}
+                  sorter={sorter}
+                  name={'couponcode'}
+                  label={i18n('user.fields.couponcode')}
+                />
+
                 <TableColumnHeader
                   label={i18n('user.fields.roles')}
                 ></TableColumnHeader>
@@ -217,6 +223,8 @@ function UserTable() {
                     <td>{row.fullName}</td>
                     <td>{row.invitationcode}</td>
                     <td>{row.refcode}</td>
+                    <td>{row.couponcode}</td>
+
                     <td>
                       {row.roles.map((roleId) => (
                         <div key={roleId}>
@@ -234,7 +242,7 @@ function UserTable() {
                       <button
                         onClick={() =>
                           showThecurrentRecord(
-                            row.tasksDone,
+                            row.id,
                             row?.vip?.dailyorder,
                           )
                         }
@@ -296,7 +304,7 @@ function UserTable() {
           <div className='score__close' onClick={() => setShowTask(false)}> <i className='fa fa-close font' /></div>
           <div className="modal__contentscore">
             <p className="text__score">
-              {done} / {totalTask}
+              {tasksdone} / {totalTask}
             </p>
           </div>
         </div>

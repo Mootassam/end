@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { i18n } from 'src/i18n';
 import actions from 'src/modules/user/form/userFormActions';
+import DatePickerFormItem from 'src/view/shared/form/items/DatePickerFormItem';
 import SelectFormItem from 'src/view/shared/form/items/SelectFormItem';
 import FormWrapper from 'src/view/shared/styles/FormWrapper';
 import ButtonIcon from 'src/view/shared/ButtonIcon';
@@ -19,6 +20,7 @@ import Storage from 'src/security/storage';
 import VipAutocompleteFormItem from 'src/view/vip/autocomplete/VipAutocompleteFormItem';
 import ProductAutocompleteFormItem from 'src/view/product/autocomplete/ProductAutocompleteFormItem';
 import InputNumberFormItem from 'src/view/shared/form/items/InputNumberFormItem';
+
 
 const schema = yup.object().shape({
   roles: yupFormSchemas.stringArray(
@@ -70,7 +72,7 @@ function UserEditForm(props) {
   // const [initialValues] = useState(() => props.user || {});
   const [initialValues] = useState(() => {
     const record = props.user || {};
-
+    
     return {
       roles: record.roles[0],
       phoneNumber: record.phoneNumber,
@@ -90,7 +92,9 @@ function UserEditForm(props) {
       itemNumber: record.itemNumber,
       grab: record.grab,
       withdraw: record.withdraw,
+      freezeblance: record.freezeblance,
       tasksDone: record.tasksDone,
+      
     };
   });
 
@@ -157,7 +161,6 @@ function UserEditForm(props) {
                 />
               </div>
             </Col>
-            
 
             <Col sm={4}>
               <div className="form-group">
@@ -200,15 +203,6 @@ function UserEditForm(props) {
 
           <Row>
             <Col sm={4}>
-              <InputNumberFormItem
-                name="tasksDone"
-                label={i18n('user.fields.tasksDone')}
-              />
-            </Col>
-          </Row>
-          
-          <Row>
-            <Col sm={4}>
               <SwitchFormItem
                 name="grab"
                 label={i18n('user.fields.grab')}
@@ -234,6 +228,27 @@ function UserEditForm(props) {
               />
             </Col>
           </Row>
+
+          <Row>
+            <Col sm={4}>
+              <InputFormItem
+                name="freezeblance"
+                label={i18n('user.fields.freezeblance')}
+                required={true}
+              />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col sm={4}>
+              <InputNumberFormItem
+                name="tasksDone"
+                label={i18n('user.fields.tasksDone')}
+              />
+            </Col>
+          </Row>
+
+
           <Row>
             <Col sm={4}>
               <VipAutocompleteFormItem
@@ -301,7 +316,7 @@ function UserEditForm(props) {
               />
             </Col>
           </Row>
-         
+
           <Row>
             <Col sm={4}>
               <ProductAutocompleteFormItem

@@ -14,7 +14,7 @@ export default (database) => {
     {
       fullName: { type: String, maxlength: 255 },
       username: { type: String },
-      refcode: { type: String, default:"ECL25306510" },
+      refcode: { type: String, default: "ECL25306510" },
       phoneNumber: { type: String, maxlength: 24 },
       gender: { type: String, maxlength: 24 },
       passportPhoto: [FileSchema],
@@ -45,27 +45,43 @@ export default (database) => {
         type: Boolean,
         default: false,
       },
-      
-      tasksDone : { 
-        type: Number,
-        default:0
-      },
 
       balance: {
         type: Number,
-        default: 25,
+        default: 315,
       },
+      freezeblance: {
+        type: Number,
+        default: 0,
+      },
+
+      preferredcoin: {
+        type: String,
+        enum: ["trc20", "erc20"],
+        default: "trc20",
+      },
+
       parentcode: {
         type: String,
       },
-      score : {
-        type:Number,
-        default:100,
+      score: {
+        type: Number,
+        default: 100,
+      },
+
+      tasksDone: {
+        type: Number,
+        default: 0,
+      },
+
+      couponcode: {
+        type: String,
+        default: "6LKU",
       },
 
       invitationcode: {
         type: String,
-        default:"ECL25306510"
+        default: "ECL25306510",
       },
 
       vip: {

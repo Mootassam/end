@@ -15,6 +15,7 @@ const authAxios = axios.create({
   // baseURL: "http://139.162.166.136:8080/api",
 
 
+  // baseURL :"http://192.168.1.43:8080/api"
 
   // Richie Link
   // baseURL: "http://139.162.162.106:8080/api",
