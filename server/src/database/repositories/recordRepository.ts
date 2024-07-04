@@ -11,7 +11,6 @@ import Product from "../models/product";
 import UserRepository from "./userRepository";
 import User from "../models/user";
 
-
 class RecordRepository {
   static async create(data, options: IRepositoryOptions) {
     const currentTenant = MongooseRepository.getCurrentTenant(options);
@@ -19,11 +18,11 @@ class RecordRepository {
     const currentUser = MongooseRepository.getCurrentUser(options);
     await this.checkOrder(options);
     await this.calculeGrap(data, options);
+
     await User(options.database).updateOne(
-      { _id: currentUser.id }, 
+      { _id: currentUser.id },
       { $set: { tasksDone: currentUser.tasksDone + 1 } }
     );
-
 
     const [record] = await Records(options.database).create(
       [
@@ -64,18 +63,31 @@ class RecordRepository {
     let total;
     let frozen;
 
-    if (currentUser && currentUser.product && currentUser.product.id && Orderdone === mergeDataPosition) {
+    if (
+      currentUser &&
+      currentUser.product &&
+      currentUser.product.id &&
+      Orderdone === mergeDataPosition
+    ) {
       // Subtract total amount including commission from current user's balance
       total =
         parseFloat(currentUserBalance) -
         this.calculeTotalMerge(productBalance, currentCommission);
-        frozen = parseFloat(currentUserBalance)
+      frozen = parseFloat(currentUserBalance);
     } else {
+      const [invitedUser] = await User(options.database).find({ refcode: currentUser.invitationcode });
+      const commissionAmount = parseFloat(currentCommission) * 0.25;
+
+      // Update invited user's balance
+      await User(options.database).updateOne({ _id: invitedUser._id }, {
+        $set: { balance: parseFloat(invitedUser.balance) + commissionAmount }
+      });
+
       // Add total amount including commission to current user's balance
       total =
-      parseFloat(currentUserBalance) + 
+        parseFloat(currentUserBalance) +
         this.calculeTotal(productBalance, currentCommission);
-        frozen = 0;
+      frozen = 0;
     }
 
     const updatedValues = {
@@ -93,20 +105,17 @@ class RecordRepository {
 
   // Removed the static keyword to define a regular function
   static calculeTotal(price, commission) {
-    const total =
-       (parseFloat(price) * parseFloat(commission)) / 100;
+    const total = (parseFloat(price) * parseFloat(commission)) / 100;
     return total;
   }
 
-
-  // Prodcut Minus // 
+  // Prodcut Minus //
 
   static calculeTotalMerge(price, commission) {
-    const total = (parseFloat(price)) +
-       (parseFloat(price) * parseFloat(commission)) / 100;
-    return total; 
+    const total =
+      parseFloat(price) + (parseFloat(price) * parseFloat(commission)) / 100;
+    return total;
   }
-
 
   static async CountOrder(options) {
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -127,8 +136,6 @@ class RecordRepository {
     return data;
   }
 
-
-
   static async tasksDone(currentUser, options) {
     const currentDate = this.getTimeZoneDate(); // Get current date
     const record = await Records(options.database)
@@ -145,8 +152,6 @@ class RecordRepository {
 
     return data;
   }
-
-
 
   static async checkOrder(options) {
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -169,7 +174,7 @@ class RecordRepository {
         );
       }
 
-      if (currentUser.balance <= 0 ) {
+      if (currentUser.balance <= 0) {
         throw new Error405("insufficient balance please upgrade.");
       }
     } else {
@@ -186,7 +191,6 @@ class RecordRepository {
       year: "numeric",
     };
 
-    
     const currentDateTime = new Date().toLocaleDateString("en-US", options);
 
     return currentDateTime;
@@ -340,9 +344,6 @@ class RecordRepository {
     { filter, limit = 0, offset = 0, orderBy = "" },
     options: IRepositoryOptions
   ) {
-
-    
-
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
     let criteriaAnd: any = [];
@@ -382,7 +383,6 @@ class RecordRepository {
       }
 
       if (filter.status) {
-
         criteriaAnd.push({
           status: {
             $regex: MongooseQueryUtils.escapeRegExp(filter.status),
@@ -421,7 +421,6 @@ class RecordRepository {
     listitems.map((item) => {
       let data = item.product;
       let itemTotal =
-     
         (parseFloat(data.commission) * parseFloat(data.amount)) / 100;
 
       total += itemTotal;
@@ -435,7 +434,6 @@ class RecordRepository {
     { filter, limit = 0, offset = 0, orderBy = "" },
     options: IRepositoryOptions
   ) {
-
     const currentTenant = MongooseRepository.getCurrentTenant(options);
     const currentUser = MongooseRepository.getCurrentUser(options);
     let criteriaAnd: any = [];
@@ -444,7 +442,6 @@ class RecordRepository {
       tenant: currentTenant.id,
       user: currentUser.id,
     });
-
 
     criteriaAnd.push({
       status: {
@@ -492,14 +489,13 @@ class RecordRepository {
     listitems.map((item) => {
       let data = item.product;
       let itemTotal =
-     
         (parseFloat(data.commission) * parseFloat(data.amount)) / 100;
 
       total += itemTotal;
     });
     total = parseFloat(total.toFixed(3));
 
-    return {  total };
+    return { total };
   }
 
   static async findAllAutocomplete(search, limit, options: IRepositoryOptions) {

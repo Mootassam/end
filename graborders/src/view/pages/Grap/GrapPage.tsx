@@ -14,7 +14,6 @@ import { useHistory } from "react-router-dom";
 import authActions from "src/modules/auth/authActions";
 import Amount from "src/shared/Amount";
 
-
 const Grappage = () => {
   const [randomImage, setRandomImage] = useState("");
   const [randomImage1, setRandomImage1] = useState("");
@@ -40,12 +39,9 @@ const Grappage = () => {
 
   const refreshItems = useCallback(async () => {
     await dispatch(actions.doFetch());
-   await dispatch(recordListAction.doFetch());
-   await dispatch(authActions.doRefreshCurrentUser());
-
+    await dispatch(recordListAction.doFetch());
+    await dispatch(authActions.doRefreshCurrentUser());
   }, [dispatch]);
-
-
 
   const displayRandomImage = () => {
     // Function to update the image source
@@ -104,8 +100,6 @@ const Grappage = () => {
       // Example: document.getElementById('imageElement').src = randomImage;
     };
 
-
-
     // Display the first random image immediately
     updateImage();
     updateImage1();
@@ -126,7 +120,6 @@ const Grappage = () => {
     setInterval(updateImage6, 3000);
     setInterval(updateImage7, 4000);
     setInterval(updateImage7, 3000);
-
   };
 
   const rollAll = async () => {
@@ -141,9 +134,8 @@ const Grappage = () => {
       setTimeout(() => {
         setShowModal(true);
       }, 1000);
-   
+
       setLoadingRoll(false);
-    
     } catch (error) {
       console.log(error);
       // Handle other errors
@@ -163,22 +155,23 @@ const Grappage = () => {
   }, [dispatch]);
 
   const calcule__total = (price, comission) => {
-    const total = (parseFloat(comission) / 100 ) * parseFloat(price) ;
+    const total = (parseFloat(comission) / 100) * parseFloat(price);
     return total.toFixed(3);
   };
 
   const currentUser = useSelector(authSelectors.selectCurrentUser);
-
-  const submit =  async () => {
+  
+  const submit = async () => {
     const values = {
       number: number,
       product: items?.id,
       status: items?.combo ? "pending" : "completed",
       user: currentUser.id,
     };
+    
     await dispatch(recordActions.doCreate(values));
     setShowModal(false);
-    await refreshItems()
+    await refreshItems();
   };
 
   const goto = (param) => {
@@ -187,9 +180,7 @@ const Grappage = () => {
   return (
     <>
       <div className="app__grappage">
-        <div className="online__service">
-          {/* <h4>Grap</h4> */}
-        </div>
+        <div className="online__service">{/* <h4>Grap</h4> */}</div>
 
         <div className="grap__order">
           <div className="order__top">
@@ -197,9 +188,7 @@ const Grappage = () => {
               <div className="vip__title"> {record?.vip?.title}</div>
               <div>
                 <label className="vip__commission">Commission Rate: </label>
-                <label className="comission">
-                  {record?.vip?.comisionrate}
-                </label>
+                <label className="comission">{record?.vip?.comisionrate}</label>
               </div>
             </div>
             <div className="second__order">
@@ -228,19 +217,19 @@ const Grappage = () => {
                 <img src={randomImage3} alt="" />
               </div>
               <div className="">
-                {currentUser.grab ?  <button
-                  className={`grap ${lodingRoll ? "__disabled" : ""}`}
-                  onClick={() => rollAll()}
-                  disabled={lodingRoll}
-                >
-                  <span className="product__start">Start</span>
-                </button> : <button
-                  className={`grap __disabled`}
-                  disabled={true}
-                >
-                  <span className="product__start">Start</span>
-                </button> }
-               
+                {currentUser.grab ? (
+                  <button
+                    className={`grap ${lodingRoll ? "__disabled" : ""}`}
+                    onClick={() => rollAll()}
+                    disabled={lodingRoll}
+                  >
+                    <span className="product__start">Start</span>
+                  </button>
+                ) : (
+                  <button className={`grap __disabled`} disabled={true}>
+                    <span className="product__start">Start</span>
+                  </button>
+                )}
               </div>
               <div className="">
                 <img src={randomImage4} alt="" />
@@ -311,18 +300,18 @@ const Grappage = () => {
           <div className="rules__title">Rules Description</div>
           <ul className="rules__list">
             <li>
-
-            (1) Every user in the platform should be able to submit all daily orders before withdrawal
-
+              (1) Every user in the platform should be able to submit all daily
+              orders before withdrawal
+            </li>
+            <li>(2) commissions depends on the vip level</li>
+            <li>
+              (3) The system automatically dispatch’s the products through the
+              cloud after submission
             </li>
             <li>
-            (2) commissions depends on the vip level
-            </li>
-            <li>
-            (3) The system automatically dispatch’s the products through the cloud after submission
-            </li>
-            <li>
-            (4) If the order is not submitted, the user will not be able to continue with the next product. The user need to submit the previous product to continue with the task
+              (4) If the order is not submitted, the user will not be able to
+              continue with the next product. The user need to submit the
+              previous product to continue with the task
             </li>
           </ul>
         </div>
