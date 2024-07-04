@@ -113,8 +113,7 @@ function Portfolio() {
           <div className="order__background">
             <div className="order__remaining">
               <label htmlFor="" className="remaining__assets">
-                {" "}
-                Remaining Availalbe assets
+                 Availalbe assets
               </label>
               <span className="remaining__amount">
                 {total}

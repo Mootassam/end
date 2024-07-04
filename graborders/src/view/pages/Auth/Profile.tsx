@@ -18,6 +18,9 @@ function Profile() {
   const total = useSelector(selectors.selectTotal);
   const totalperday = useSelector(selectors.selectTotalPerday);
 
+
+
+  
   useEffect(() => {
     const values = {
       status: "completed",
@@ -57,7 +60,7 @@ function Profile() {
   ];
   const referenceCodeRef = useRef<any>(null);
 
-  const copyToClipboard = () => {
+  const copyToClipboardCoupon = () => {
     const referenceCode = referenceCodeRef.current.innerText;
 
     // Check if the browser supports the modern clipboard API
@@ -100,10 +103,21 @@ function Profile() {
               <div className="left__details">
                 <div className="user__title">{currentUser?.fullName}</div>
                 <div className="small__invitation">
+
+                  <div className="invitation__code">
                   <div className="small__inviation__left">
                     InvitationCode :
                     <span ref={referenceCodeRef}> {currentUser?.refcode}</span>
                   </div>
+
+                  <div>
+                  <i
+                    className="fa-regular fa-copy"
+                    onClick={() => copyToClipboardCoupon()}
+                    style={{fontSize:24}}
+                  />
+                </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -217,7 +231,7 @@ function Profile() {
               <div className="line__section">
                 <div className="titre__section">
                   <i className="fa-solid fa-wallet profile__icon"></i>
-                  <span>Wallet</span>
+                  <span>Update withdrawal details</span>
                 </div>
                 <div>
                   <i className="fa fa-arrow-right " />

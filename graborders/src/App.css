@@ -1665,6 +1665,11 @@ button:disabled {
   z-index: 1;
 }
 
+.invitation__code{ 
+  display: flex;
+gap:30px;
+}
+
 .number__link {
   text-decoration: none;
 }
