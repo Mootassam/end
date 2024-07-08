@@ -14,7 +14,7 @@ const authAxios = Axios.create({
   // baseURL: "http://172.104.141.32:8080/api",
 
 //Blade + Richie  + other guys for teting 
-baseURL: "http://139.162.166.136:8080/api",
+baseURL: "http://203.161.58.76:8080/api",
 
 
   paramsSerializer: function (params) {
