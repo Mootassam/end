@@ -43,7 +43,7 @@ const fr = {
   },
 
   app: {
-    title: 'E-CLICKS DIGITAL',
+    title: 'Disruptive Advertising',
   },
 
   api: {
