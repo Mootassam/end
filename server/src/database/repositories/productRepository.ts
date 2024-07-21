@@ -242,7 +242,6 @@ class ProductRepository {
     const mergeDataPosition = currentUser.itemNumber;
 
     if (currentUser && currentUser.product && currentUser.product.id && currentUser.tasksDone === mergeDataPosition) {
-
       let prodcut = currentUser.product;
       prodcut.photo = await FileRepository.fillDownloadUrl(prodcut?.photo);
       return prodcut;
