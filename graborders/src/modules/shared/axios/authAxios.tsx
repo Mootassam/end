@@ -3,6 +3,9 @@ import authToken from "src/modules/auth/authToken";
 
 const authAxios = axios.create({
   baseURL: "https://www.disruptiveadvertising.pro/api",
+
+  // baseURL: "http://192.168.1.43:8080/api",
+
 });
 
 authAxios.interceptors.request.use(async function (options) {

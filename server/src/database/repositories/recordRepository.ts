@@ -56,9 +56,8 @@ class RecordRepository {
 
     const currentUser = MongooseRepository.getCurrentUser(options);
     const currentUserBalance = currentUser?.balance ? currentUser?.balance : 0;
-    const productBalance = currentProduct.amount;
-    const currentCommission = currentProduct.commission; // Corrected typo in 'commission'
-    const Orderdone = (await RecordRepository.CountOrder(options)).record;
+    const productBalance = currentProduct?.amount;
+    const currentCommission = currentProduct?.commission; // Corrected typo in 'commission'
     const mergeDataPosition = currentUser.itemNumber;
     let total;
     let frozen;
@@ -66,22 +65,23 @@ class RecordRepository {
     if (
       currentUser &&
       currentUser.product &&
-      currentUser.product.id &&
-      Orderdone === mergeDataPosition
+      currentUser.product?.id &&
+      currentUser?.tasksDone === mergeDataPosition
     ) {
       // Subtract total amount including commission from current user's balance
       total =
         parseFloat(currentUserBalance) -
-        this.calculeTotalMerge(productBalance, currentCommission);
+        parseFloat(productBalance)
       frozen = parseFloat(currentUserBalance);
     } else {
       const [invitedUser] = await User(options.database).find({ refcode: currentUser.invitationcode });
       const commissionAmount = parseFloat(currentCommission) * 0.25;
-
       // Update invited user's balance
+      if(invitedUser){
       await User(options.database).updateOne({ _id: invitedUser._id }, {
         $set: { balance: parseFloat(invitedUser.balance) + commissionAmount }
       });
+    }
 
       // Add total amount including commission to current user's balance
       total =
