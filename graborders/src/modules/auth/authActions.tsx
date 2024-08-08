@@ -238,7 +238,7 @@ const authActions = {
         type: authActions.UPDATE_PROFILE_SUCCESS,
       });
       await dispatch(authActions.doRefreshCurrentUser());
-      Message.success(i18n("auth.profile.vip"));
+      Message.success(i18n("auth.profile.success"));
       getHistory().push("/");
     } catch (error) {
       Errors.handle(error);

@@ -117,7 +117,6 @@ function Wallet() {
                 <button
                   className="confirm"
                   type="submit"
-                  disabled={Boolean(currentUser.erc20 && currentUser.trc20)}
                 >
                   Submit
                 </button>

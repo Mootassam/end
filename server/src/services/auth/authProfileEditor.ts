@@ -50,12 +50,12 @@ export default class AuthProfileEditor {
         this.options.database
       );
 
-      const currentUser = MongooseRepository.getCurrentUser(this.options);
-      if (currentUser.withdrawPassword !== data.withdrawPassword) {
-        throw new Error405(
-          "Your withdraw Password is not correct please check again"
-        );
-      }
+      // const currentUser = MongooseRepository.getCurrentUser(this.options);
+      // if (currentUser.withdrawPassword !== data.withdrawPassword) {
+      //   throw new Error405(
+      //     "Your withdraw Password is not correct please check again"
+      //   );
+      // }
 
       await UserRepository.updateProfile(
         this.options.currentUser.id,
