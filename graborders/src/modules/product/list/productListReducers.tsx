@@ -1,4 +1,4 @@
-import actions from 'src/modules/product/list/productListActions';
+import actions from "src/modules/product/list/productListActions";
 
 const INITIAL_PAGE_SIZE = 10;
 
@@ -7,6 +7,7 @@ const initialData = {
   loading: false,
   filter: {},
   rawFilter: {},
+  showModal: false,
   pagination: {
     current: 1,
     pageSize: INITIAL_PAGE_SIZE,
@@ -28,9 +29,7 @@ export default (state = initialData, { type, payload }) => {
     const exists = selectedKeys.includes(payload);
 
     if (exists) {
-      selectedKeys = selectedKeys.filter(
-        (key) => key !== payload,
-      );
+      selectedKeys = selectedKeys.filter((key) => key !== payload);
     } else {
       selectedKeys = [payload, ...selectedKeys];
     }
@@ -40,8 +39,6 @@ export default (state = initialData, { type, payload }) => {
       selectedKeys,
     };
   }
-
- 
 
   if (type === actions.CLEAR_ALL_SELECTED) {
     return {
@@ -70,10 +67,12 @@ export default (state = initialData, { type, payload }) => {
   if (type === actions.FETCH_STARTED) {
     return {
       ...state,
+      showModal: false,
+
       loading: true,
       selectedKeys: [],
       filter: payload ? payload.filter : {},
-rawFilter: payload ? payload.rawFilter : {},
+      rawFilter: payload ? payload.rawFilter : {},
       pagination:
         payload && payload.keepPagination
           ? state.pagination
@@ -89,7 +88,7 @@ rawFilter: payload ? payload.rawFilter : {},
       ...state,
       loading: false,
       rows: payload,
-      
+      showModal: true,
     };
   }
 
@@ -98,9 +97,11 @@ rawFilter: payload ? payload.rawFilter : {},
       ...state,
       loading: false,
       rows: {},
-
+      showModal: false,
     };
   }
+
+  
 
   if (type === actions.EXPORT_STARTED) {
     return {

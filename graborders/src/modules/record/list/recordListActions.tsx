@@ -1,6 +1,7 @@
 import selectors from "src/modules/record/list/recordListSelectors";
 import Errors from "src/modules/shared/error/errors";
 import RecordService from "src/modules/record/recordService";
+import productListActions from "src/modules/product/list/productListActions";
 
 const prefix = "RECORD_LIST";
 
@@ -117,6 +118,7 @@ const recordListActions = {
       dispatch({
         type: recordListActions.CHECK_SUCCESS,
       });
+      await dispatch(productListActions.doFetch()); 
     } catch (error) {
       Errors.handle(error);
 

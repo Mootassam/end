@@ -1,7 +1,7 @@
-import Errors from 'src/modules/shared/error/errors';
-import ProductService from 'src/modules/product/productService';
+import Errors from "src/modules/shared/error/errors";
+import ProductService from "src/modules/product/productService";
 
-const prefix = 'PRODUCT_LIST';
+const prefix = "PRODUCT_LIST";
 
 const productListActions = {
   FETCH_STARTED: `${prefix}_FETCH_STARTED`,
@@ -20,7 +20,6 @@ const productListActions = {
   EXPORT_SUCCESS: `${prefix}_EXPORT_SUCCESS`,
   EXPORT_ERROR: `${prefix}_EXPORT_ERROR`,
 
-
   doFetch:
     (filter?, rawFilter?, keepPagination = false) =>
     async (dispatch, getState) => {
@@ -33,9 +32,8 @@ const productListActions = {
 
         dispatch({
           type: productListActions.FETCH_SUCCESS,
-          payload: response
+          payload: response,
         });
-        
       } catch (error) {
         Errors.handle(error);
 
@@ -44,6 +42,12 @@ const productListActions = {
         });
       }
     },
+
+  hidemodal: () => async (dispatch, getState) => {
+    dispatch({
+      type: productListActions.FETCH_ERROR,
+    });
+  },
 };
 
 export default productListActions;

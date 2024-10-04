@@ -1,16 +1,11 @@
-import actions from 'src/modules/record/list/recordListActions';
+import actions from 'src/modules/product/list/productListActions';
 
 const INITIAL_PAGE_SIZE = 10;
 
 const initialData = {
   rows: [] as Array<any>,
   count: 0,
-  counts: 0,
-  total: 0,
   loading: false,
-  loadingday: false,
-  countsday: 0,
-  checkLoading: false, 
   filter: {},
   rawFilter: {},
   pagination: {
@@ -19,7 +14,6 @@ const initialData = {
   },
   sorter: {},
   selectedKeys: [] as Array<string>,
-  error: ""
 };
 
 export default (state = initialData, { type, payload }) => {
@@ -91,7 +85,7 @@ export default (state = initialData, { type, payload }) => {
       loading: true,
       selectedKeys: [],
       filter: payload ? payload.filter : {},
-      rawFilter: payload ? payload.rawFilter : {},
+rawFilter: payload ? payload.rawFilter : {},
       pagination:
         payload && payload.keepPagination
           ? state.pagination
@@ -108,7 +102,6 @@ export default (state = initialData, { type, payload }) => {
       loading: false,
       rows: payload.rows,
       count: payload.count,
-      total : payload.total,
     };
   }
 
@@ -118,93 +111,8 @@ export default (state = initialData, { type, payload }) => {
       loading: false,
       rows: [],
       count: 0,
-      total : 0,
     };
   }
-
-
-  if (type === actions.CHECK_STARTED) {
-    return {
-      ...state,
-      loading: true,
-      checkLoading: true
-    };
-  }
-
-  if (type === actions.CHECK_SUCCESS) {
-    return {
-      ...state,
-      loading: false,
-      checkLoading: false, 
-    };
-  }
-
-  if (type === actions.CHECK_ERROR) {
-    return {
-      ...state,
-      loading: false,
-      error: payload, 
-      checkLoading: false, 
-    };
-  }
-
-
-  if (type === actions.COUNT_STARTED) {
-    return {
-      ...state,
-      loading: true,
-      counts : 0
-    };
-  }
-
-  if (type === actions.COUNT_SUCCESS) {
-
-    return {
-      ...state,
-      loading: false,
-      counts : payload.count
-    };
-  }
-
-  if (type === actions.COUNT_ERROR) {
-    return {
-      ...state,
-      loading: false,
-      counts : 0
-    };
-  }
-
-
-
-  if (type === actions.COUNTDAY_STARTED) {
-    return {
-      ...state,
-      loadingday: true,
-      countsday : 0
-    };
-  }
-
-  if (type === actions.COUNTDAY_SUCCESS) {
-
-    return {
-      ...state,
-      loadingday: false,
-      countsday : payload.count
-
-    };
-  }
-
-  if (type === actions.COUNTDAY_ERROR) {
-    return {
-      ...state,
-      loadingday: false,
-      countsday : 0
-      
-    
-    };
-  }
-
-
 
   if (type === actions.EXPORT_STARTED) {
     return {

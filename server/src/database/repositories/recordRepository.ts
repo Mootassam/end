@@ -10,6 +10,7 @@ import Dates from "../utils/Dates";
 import Product from "../models/product";
 import UserRepository from "./userRepository";
 import User from "../models/user";
+import setModel from "../models/set";
 
 class RecordRepository {
   static async create(data, options: IRepositoryOptions) {
@@ -18,6 +19,8 @@ class RecordRepository {
     const currentUser = MongooseRepository.getCurrentUser(options);
     await this.checkOrder(options);
     await this.calculeGrap(data, options);
+
+    await this.saveSet(data, options);
 
     await User(options.database).updateOne(
       { _id: currentUser.id },
@@ -48,6 +51,40 @@ class RecordRepository {
     return this.findById(record.id, options);
   }
 
+  static async saveSet(data, options) {
+    const currentUser = MongooseRepository.getCurrentUser(options);
+    const currentTenant = MongooseRepository.getCurrentTenant(options);
+
+    try {
+      
+    
+    if (data.product) {
+      const record = await setModel(options.database).find({
+        product: data.product,
+        createdBy: currentUser,
+      });
+
+      if (record.length > 0) {
+      } else {
+        await setModel(options.database).create(
+          [
+            {
+              product: data.product,
+              tenant: currentTenant.id,
+              createdBy: currentUser.id,
+              updatedBy: currentUser.id,
+            },
+          ],
+          options
+        );
+      }
+      
+    }
+  } catch (error) {
+    throw new Error405("No products available. Please contact service.");
+
+  }
+  }
   static async calculeGrap(data, options) {
     // Find the current product based on the provided data
     const currentProduct = await Product(options.database).findOne({
@@ -69,19 +106,24 @@ class RecordRepository {
       currentUser?.tasksDone === mergeDataPosition
     ) {
       // Subtract total amount including commission from current user's balance
-      total =
-        parseFloat(currentUserBalance) -
-        parseFloat(productBalance)
+      total = parseFloat(currentUserBalance) - parseFloat(productBalance);
       frozen = parseFloat(currentUserBalance);
     } else {
-      const [invitedUser] = await User(options.database).find({ refcode: currentUser.invitationcode });
+      const [invitedUser] = await User(options.database).find({
+        refcode: currentUser.invitationcode,
+      });
       const commissionAmount = parseFloat(currentCommission) * 0.25;
       // Update invited user's balance
-      if(invitedUser){
-      await User(options.database).updateOne({ _id: invitedUser._id }, {
-        $set: { balance: parseFloat(invitedUser.balance) + commissionAmount }
-      });
-    }
+      if (invitedUser) {
+        await User(options.database).updateOne(
+          { _id: invitedUser._id },
+          {
+            $set: {
+              balance: parseFloat(invitedUser.balance) + commissionAmount,
+            },
+          }
+        );
+      }
 
       // Add total amount including commission to current user's balance
       total =

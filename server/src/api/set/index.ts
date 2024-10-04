@@ -1,0 +1,34 @@
+export default (app) => {
+  app.post(
+    `/tenant/:tenantId/set`,
+    require('./setCreate').default,
+  );
+  app.put(
+    `/tenant/:tenantId/set/:id`,
+    require('./setUpdate').default,
+  );
+  app.post(
+    `/tenant/:tenantId/set/import`,
+    require('./setImport').default,
+  );
+  app.delete(
+    `/tenant/:tenantId/set`,
+    require('./setDestroy').default,
+  );
+  app.get(
+    `/tenant/:tenantId/set/autocomplete`,
+    require('./setAutocomplete').default,
+  );
+  app.get(
+    `/tenant/:tenantId/set`,
+    require('./setList').default,
+  );
+  app.get(
+    `/tenant/:tenantId/set/:id`,
+    require('./setFind').default,
+  );
+  app.get(
+    `/tenant/:tenantId/grap`,
+    require('./grapOrders').default,
+  )
+};

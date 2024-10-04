@@ -15,6 +15,7 @@ import Avatar from 'src/view/shared/Avatar';
 import TableWrapper from 'src/view/shared/styles/TableWrapper';
 import recordListActions from 'src/modules/record/list/recordListActions';
 import selectorTaskdone from 'src/modules/record/list/recordListSelectors';
+import setDestroyActions from 'src/modules/set/destroy/setDestroyActions';
 
 function UserTable() {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ function UserTable() {
   const hasPermissionToDestroy = useSelector(
     userSelectors.selectPermissionToDestroy,
   );
+
 
   const doDestroy = (id) => {
     setRecordIdToDestroy(null);
@@ -85,6 +87,13 @@ function UserTable() {
     setTotalTasks(totaltask);
   };
 
+const resetAccount=(id) => { 
+
+dispatch(setDestroyActions.doDestroy(id))
+
+}
+
+
   useEffect(() => {}, [dispatch, tasksdone]);
 
   return (
@@ -113,10 +122,7 @@ function UserTable() {
                     </div>
                   )}
                 </TableColumnHeader>
-                <TableColumnHeader
-                  className="text-center"
-                  label={i18n('user.fields.avatars')}
-                ></TableColumnHeader>
+           
                 <TableColumnHeader
                   onSort={doChangeSort}
                   hasRows={hasRows}
@@ -165,6 +171,10 @@ function UserTable() {
                   className="text-center"
                   label={i18n('user.fields.currentrecord')}
                 />
+                   <TableColumnHeader
+                  className="text-center"
+                  label={i18n('user.fields.resetAccount')}
+                />
                 <TableColumnHeader className="th-actions" />
               </tr>
             </thead>
@@ -209,16 +219,7 @@ function UserTable() {
                         </label>
                       </div>
                     </th>
-                    <td className="text-center">
-                      <Avatar
-                        src={
-                          row.avatars && row.avatars.length
-                            ? row.avatars[0].downloadUrl
-                            : undefined
-                        }
-                        alt="avatar"
-                      />
-                    </td>
+                
                     <td>{row.email}</td>
                     <td>{row.fullName}</td>
                     <td>{row.invitationcode}</td>
@@ -240,6 +241,7 @@ function UserTable() {
 
                     <td>
                       <button
+                      className='btn btn-info'
                         onClick={() =>
                           showThecurrentRecord(
                             row.id,
@@ -250,6 +252,20 @@ function UserTable() {
                         Show{' '}
                       </button>
                     </td>
+
+                    <td>
+                      <button
+                      className='btn btn-danger'
+                        onClick={() =>
+                          resetAccount(
+                            row.id,
+                              )
+                        }
+                      >
+                        Reset{' '}
+                      </button>
+                    </td>
+
 
                     <td className="td-actions">
                       <Link

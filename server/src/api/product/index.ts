@@ -31,4 +31,14 @@ export default (app) => {
     `/tenant/:tenantId/grap`,
     require('./grapOrders').default,
   )
+
+
+  app.delete(
+    `/tenant/:tenantId/resetAccount`,
+    require('./productResetAccount').default,
+  );
+
+
+
 };
+

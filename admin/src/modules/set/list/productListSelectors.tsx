@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const selectRaw = (state) => state.product;
+const selectRaw = (state) => state.product.list;
 
 const selectLoading = createSelector(
   [selectRaw],
@@ -17,7 +17,15 @@ const selectRows = createSelector(
   (raw) => raw.rows,
 );
 
+const selectCount = createSelector(
+  [selectRaw],
+  (raw) => raw.count,
+);
 
+const selectHasRows = createSelector(
+  [selectCount],
+  (count) => count > 0,
+);
 
 const selectSorter = createSelector(
   [selectRaw],
@@ -69,7 +77,15 @@ const selectOffset = createSelector([selectRaw], (raw) => {
   return (current - 1) * pagination.pageSize;
 });
 
-
+const selectPagination = createSelector(
+  [selectRaw, selectCount],
+  (raw, count) => {
+    return {
+      ...raw.pagination,
+      total: count,
+    };
+  },
+);
 
 const selectSelectedKeys = createSelector(
   [selectRaw],
@@ -94,27 +110,22 @@ const selectIsAllSelected = createSelector(
   },
 );
 
-const selectShowModal = createSelector([selectRaw],  (raw) => {
-return raw.showModal
-})
-
-
-
-
-const productListSelectors = {
+const couponsListSelectors = {
   selectLoading,
   selectRows,
+  selectCount,
   selectOrderBy,
   selectLimit,
   selectFilter,
   selectOffset,
+  selectPagination,
   selectSelectedKeys,
   selectSelectedRows,
+  selectHasRows,
   selectExportLoading,
   selectRawFilter,
   selectIsAllSelected,
   selectSorter,
-  selectShowModal
 };
 
-export default productListSelectors;
+export default couponsListSelectors;

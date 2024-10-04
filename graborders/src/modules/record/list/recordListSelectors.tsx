@@ -127,7 +127,7 @@ const selectIsAllSelected = createSelector(
     return rows.length === selectedKeys.length;
   },
 );
-
+const selectCheckLoading = createSelector([selectRaw], (raw) => raw.checkLoading)
 const couponsListSelectors = {
   selectTotal,
   selectLoading,
@@ -147,7 +147,8 @@ const couponsListSelectors = {
   selectSorter,
   selectError, 
   selectCountRecord,
-  selectTotalPerday
+  selectTotalPerday, 
+  selectCheckLoading
 };
 
 export default couponsListSelectors;

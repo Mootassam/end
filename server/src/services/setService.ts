@@ -1,10 +1,9 @@
-import Error400 from "../errors/Error400";
-import MongooseRepository from "../database/repositories/mongooseRepository";
-import { IServiceOptions } from "./IServiceOptions";
-import ProductRepository from "../database/repositories/productRepository";
-import Error405 from "../errors/Error405";
+import Error400 from '../errors/Error400';
+import MongooseRepository from '../database/repositories/mongooseRepository';
+import { IServiceOptions } from './IServiceOptions';
+import VipRepository from '../database/repositories/vipRepository';
 
-export default class ProductServices {
+export default class SetServices {
   options: IServiceOptions;
 
   constructor(options) {
@@ -13,11 +12,11 @@ export default class ProductServices {
 
   async create(data) {
     const session = await MongooseRepository.createSession(
-      this.options.database
+      this.options.database,
     );
 
     try {
-      const record = await ProductRepository.create(data, {
+      const record = await VipRepository.create(data, {
         ...this.options,
         session,
       });
@@ -31,37 +30,27 @@ export default class ProductServices {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        "product"
+        'vip',
       );
 
       throw error;
     }
   }
-async ResetAccount(id) { 
-try {
-  const record = await ProductRepository.ResetAccount(id, this.options)
-
-} catch (error) {
-
-  console.log('====================================');
-  console.log(error);
-  console.log('====================================');
-  
-}
-
-}
-
 
   async update(id, data) {
     const session = await MongooseRepository.createSession(
-      this.options.database
+      this.options.database,
     );
 
     try {
-      const record = await ProductRepository.update(id, data, {
-        ...this.options,
-        session,
-      });
+      const record = await VipRepository.update(
+        id,
+        data,
+        {
+          ...this.options,
+          session,
+        },
+      );
 
       await MongooseRepository.commitTransaction(session);
 
@@ -72,7 +61,7 @@ try {
       MongooseRepository.handleUniqueFieldError(
         error,
         this.options.language,
-        "product"
+        'vip',
       );
 
       throw error;
@@ -81,12 +70,12 @@ try {
 
   async destroyAll(ids) {
     const session = await MongooseRepository.createSession(
-      this.options.database
+      this.options.database,
     );
 
     try {
       for (const id of ids) {
-        await ProductRepository.destroy(id, {
+        await VipRepository.destroy(id, {
           ...this.options,
           session,
         });
@@ -100,52 +89,36 @@ try {
   }
 
   async findById(id) {
-    return ProductRepository.findById(id, this.options);
+    return VipRepository.findById(id, this.options);
   }
 
   async findAllAutocomplete(search, limit) {
-    return ProductRepository.findAllAutocomplete(search, limit, this.options);
+    return VipRepository.findAllAutocomplete(
+      search,
+      limit,
+      this.options,
+    );
   }
 
   async findAndCountAll(args) {
-    return ProductRepository.findAndCountAll(args, this.options);
-  }
-
-  async checkpermission(options) { 
-    const currentUser = MongooseRepository.getCurrentUser(options);
-if( currentUser.grab) return 
-
-throw new Error405("Should be contact the customer service about this");
-
-
-  }
-
-  async grapOrders(args) {
-    const session = await MongooseRepository.createSession(
-      this.options.database
+    return VipRepository.findAndCountAll(
+      args,
+      this.options,
     );
-    try {
-      // await this.checkpermission(this.options)
-      return ProductRepository.grapOrders(this.options);
-    } catch (error) {
-      await MongooseRepository.abortTransaction(session);
-      throw error;
-
-    }
   }
 
   async import(data, importHash) {
     if (!importHash) {
       throw new Error400(
         this.options.language,
-        "importer.errors.importHashRequired"
+        'importer.errors.importHashRequired',
       );
     }
 
     if (await this._isImportHashExistent(importHash)) {
       throw new Error400(
         this.options.language,
-        "importer.errors.importHashExistent"
+        'importer.errors.importHashExistent',
       );
     }
 
@@ -158,11 +131,11 @@ throw new Error405("Should be contact the customer service about this");
   }
 
   async _isImportHashExistent(importHash) {
-    const count = await ProductRepository.count(
+    const count = await VipRepository.count(
       {
         importHash,
       },
-      this.options
+      this.options,
     );
 
     return count > 0;

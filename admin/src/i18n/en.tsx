@@ -2638,6 +2638,7 @@ const en = {
       currentrecord: 'Tasks Done',
       freezeblance: 'Freeze Balance',
       couponcode: 'couponcode',
+      resetAccount: "Reset Account",
       photo: 'photo',
       id: 'Id',
       avatars: 'Avatar',

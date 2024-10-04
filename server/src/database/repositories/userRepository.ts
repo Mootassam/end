@@ -13,6 +13,7 @@ import Error405 from "../../errors/Error405";
 import product from "../models/product";
 import VipRepository from "./vipRepository";
 import Vip from "../models/vip";
+import set from "../models/set";
 export default class UserRepository {
   static async create(data, options: IRepositoryOptions) {
     const currentUser = MongooseRepository.getCurrentUser(options);
@@ -1144,4 +1145,6 @@ export default class UserRepository {
 
     return count;
   }
+
+
 }

@@ -4,19 +4,14 @@ import AuditLogRepository from "./auditLogRepository";
 import Error404 from "../../errors/Error404";
 import { IRepositoryOptions } from "./IRepositoryOptions";
 import FileRepository from "./fileRepository";
-import Product from "../models/product";
-import UserRepository from "./userRepository";
-import RecordRepository from "./recordRepository";
-import SetModel from "../models/set";
-import Error405 from "../../errors/Error405";
+import Set from "../models/set";
 
-class ProductRepository {
+class SetRepository {
   static async create(data, options: IRepositoryOptions) {
+
     const currentTenant = MongooseRepository.getCurrentTenant(options);
-
     const currentUser = MongooseRepository.getCurrentUser(options);
-
-    const [record] = await Product(options.database).create(
+    const [record] = await Set(options.database).create(
       [
         {
           ...data,
@@ -27,7 +22,6 @@ class ProductRepository {
       ],
       options
     );
-
     await this._createAuditLog(
       AuditLogRepository.CREATE,
       record.id,
@@ -36,13 +30,15 @@ class ProductRepository {
     );
 
     return this.findById(record.id, options);
+
   }
 
   static async update(id, data, options: IRepositoryOptions) {
+
     const currentTenant = MongooseRepository.getCurrentTenant(options);
 
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      Product(options.database).findById(id),
+      Set(options.database).findById(id),
       options
     );
 
@@ -50,7 +46,7 @@ class ProductRepository {
       throw new Error404();
     }
 
-    await Product(options.database).updateOne(
+    await Set(options.database).updateOne(
       { _id: id },
       {
         ...data,
@@ -64,13 +60,14 @@ class ProductRepository {
     record = await this.findById(id, options);
 
     return record;
+    
   }
 
   static async destroy(id, options: IRepositoryOptions) {
     const currentTenant = MongooseRepository.getCurrentTenant(options);
 
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      Product(options.database).findById(id),
+      Set(options.database).findById(id),
       options
     );
 
@@ -78,7 +75,7 @@ class ProductRepository {
       throw new Error404();
     }
 
-    await Product(options.database).deleteOne({ _id: id }, options);
+    await Set(options.database).deleteOne({ _id: id }, options);
 
     await this._createAuditLog(AuditLogRepository.DELETE, id, record, options);
   }
@@ -87,7 +84,7 @@ class ProductRepository {
     const currentTenant = MongooseRepository.getCurrentTenant(options);
 
     return MongooseRepository.wrapWithSessionIfExists(
-      Product(options.database).countDocuments({
+      Set(options.database).countDocuments({
         ...filter,
         tenant: currentTenant.id,
       }),
@@ -99,7 +96,7 @@ class ProductRepository {
     const currentTenant = MongooseRepository.getCurrentTenant(options);
 
     let record = await MongooseRepository.wrapWithSessionIfExists(
-      Product(options.database).findById(id).populate("vip"),
+      Set(options.database).findById(id).populate("members"),
       options
     );
 
@@ -138,35 +135,28 @@ class ProductRepository {
         });
       }
 
-      if (filter.amount) {
+      if (filter.levellimit) {
         criteriaAnd.push({
-          amount: {
-            $regex: MongooseQueryUtils.escapeRegExp(filter.amount),
+          levellimit: {
+            $regex: MongooseQueryUtils.escapeRegExp(filter.levellimit),
             $options: "i",
           },
         });
       }
-      if (filter.vip) {
-        criteriaAnd.push({
-          vip: filter.vip,
-        });
-      }
     }
 
-    const sort = MongooseQueryUtils.sort(orderBy || "createdAt_DESC");
-
+    const sort = MongooseQueryUtils.sort(orderBy || "createdAt_ASC");
     const skip = Number(offset || 0) || undefined;
     const limitEscaped = Number(limit || 0) || undefined;
     const criteria = criteriaAnd.length ? { $and: criteriaAnd } : null;
-
-    let rows = await Product(options.database)
+    let rows = await Set(options.database)
       .find(criteria)
       .skip(skip)
       .limit(limitEscaped)
-      .populate("vip")
-      .sort(sort);
+      .sort(sort)
+      .populate("members");
 
-    const count = await Product(options.database).countDocuments(criteria);
+    const count = await Set(options.database).countDocuments(criteria);
 
     rows = await Promise.all(rows.map(this._fillFileDownloadUrls));
 
@@ -203,7 +193,7 @@ class ProductRepository {
 
     const criteria = { $and: criteriaAnd };
 
-    const records = await Product(options.database)
+    const records = await Set(options.database)
       .find(criteria)
       .limit(limitEscaped)
       .sort(sort);
@@ -217,7 +207,7 @@ class ProductRepository {
   static async _createAuditLog(action, id, data, options: IRepositoryOptions) {
     await AuditLogRepository.log(
       {
-        entityName: Product(options.database).modelName,
+        entityName: Set(options.database).modelName,
         entityId: id,
         action,
         values: data,
@@ -232,91 +222,11 @@ class ProductRepository {
     }
 
     const output = record.toObject ? record.toObject() : record;
+
     output.photo = await FileRepository.fillDownloadUrl(output.photo);
 
     return output;
   }
-
-  static async grapOrders(options: IRepositoryOptions) {
-    const currentUser = MongooseRepository.getCurrentUser(options);
-    const currentTenant = MongooseRepository.getCurrentTenant(options);
-    const currentVip = MongooseRepository.getCurrentUser(options).vip.id;
-    const Orderdone = (await RecordRepository.CountOrder(options)).record;
-    const mergeDataPosition = currentUser.itemNumber;
-
-    if (
-      currentUser &&
-      currentUser.product &&
-      currentUser.product.id &&
-      currentUser.tasksDone === mergeDataPosition
-    ) {
-      let prodcut = currentUser.product;
-      prodcut.photo = await FileRepository.fillDownloadUrl(prodcut?.photo);
-      return prodcut;
-    } else {
-      // the First condition we will make a test if we have data in the set
-
-      // if we have data  we need to make sure the product saved their .
-      //  not pick up again from the list of prodcuts
-      //  after that we will save it in the list of set.
-
-      let record = await Product(options.database)
-        .find({ vip: currentVip, combo: false })
-        .populate("vip");
-      const random = Math.floor(Math.random() * record.length);
-      record = await Promise.all(record.map(this._fillFileDownloadUrls));
-
-      const Listset = await SetModel(options.database).find({
-        createdBy: currentUser.id,
-      });
-
-      let randomRecord;
-
-      if (record && record.length > 0) {
-        let randomRecord;
-
-        if (Listset && Listset.length > 0) {
-          const excludedProductIds = Listset.map((item) => item.product);
-
-          let records = await Product(options.database)
-            .find({
-              vip: currentVip,
-              combo: false,
-              _id: { $nin: excludedProductIds },
-            })
-            .populate("vip");
-
-          records = await Promise.all(records.map(this._fillFileDownloadUrls));
-
-          if (records.length > 0) {
-            // Randomly select a record
-            const randomIndex = Math.floor(Math.random() * records.length);
-            randomRecord = records[randomIndex];
-          } else {
-            throw new Error405("No available products matching criteria.");
-          }
-        } else {
-          const randomIndex = Math.floor(Math.random() * record.length);
-          randomRecord = record[randomIndex];
-        }
-
-        return randomRecord;
-      } else {
-      }
-    }
-  }
-
-  static async ResetAccount(userid, options: IRepositoryOptions) {
-    try {
-      const result = await SetModel(options.database).deleteMany({
-        createdBy: userid,
-      });
-      return result; // Return the result of the delete operation
-    } catch (error) {
-      console.error("Error resetting account:", error);
-      throw new Error("Failed to reset account."); // Re-throw or handle the error as needed
-    }
-  }
 }
 
-export default ProductRepository;
+export default SetRepository;

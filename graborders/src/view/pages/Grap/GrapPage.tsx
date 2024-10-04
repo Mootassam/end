@@ -13,6 +13,8 @@ import Image from "src/shared/Images";
 import { useHistory } from "react-router-dom";
 import authActions from "src/modules/auth/authActions";
 import Amount from "src/shared/Amount";
+import productListSelectors from "src/modules/product/list/productListSelectors";
+import productListActions from "src/modules/product/list/productListActions";
 
 const Grappage = () => {
   const [randomImage, setRandomImage] = useState("");
@@ -31,14 +33,13 @@ const Grappage = () => {
   const items = useSelector(selector.selectRows);
   const loading = useSelector(selector.selectLoading);
   // const numberRecord = useSelector(recordSelector.selectCount);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [lodingRoll, setLoadingRoll] = useState(false);
   const selectCountRecord = useSelector(recordSelector.selectCountRecord);
 
   const error = useSelector(recordSelector.selectError);
 
   const refreshItems = useCallback(async () => {
-    await dispatch(actions.doFetch());
     await dispatch(recordListAction.doFetch());
     await dispatch(authActions.doRefreshCurrentUser());
   }, [dispatch]);
@@ -122,29 +123,19 @@ const Grappage = () => {
     setInterval(updateImage7, 3000);
   };
 
+  const showModals = useSelector(productListSelectors.selectShowModal)
+const checkLoading = useSelector(recordSelector.selectCheckLoading)
   const rollAll = async () => {
     try {
-      setLoadingRoll(true);
       await dispatch(recordListAction.doCheck());
-      if (error) {
-        return;
-      }
-      await dispatch(actions.doFetch());
-
-      setTimeout(() => {
-        setShowModal(true);
-      }, 1000);
-
-      setLoadingRoll(false);
     } catch (error) {
       console.log(error);
-      // Handle other errors
-      setLoadingRoll(false);
     }
   };
 
   const hideModal = () => {
-    setShowModal(false);
+    // setShowModal(false);
+    dispatch(actions.hidemodal())
   };
 
   const [number] = useState(Dates.Number());
@@ -152,7 +143,7 @@ const Grappage = () => {
   useEffect(() => {
     dispatch(recordListAction.doCount());
     displayRandomImage();
-  }, [dispatch]);
+  }, [dispatch, showModals, checkLoading]);
 
   const calcule__total = (price, comission) => {
     const total = (parseFloat(comission) / 100) * parseFloat(price);
@@ -170,7 +161,7 @@ const Grappage = () => {
     };
     
     await dispatch(recordActions.doCreate(values));
-    setShowModal(false);
+    await dispatch(actions.hidemodal())
     await refreshItems();
   };
 
@@ -219,9 +210,9 @@ const Grappage = () => {
               <div className="">
                 {currentUser.grab ? (
                   <button
-                    className={`grap ${lodingRoll ? "__disabled" : ""}`}
+                    className={`grap ${checkLoading ? "__disabled" : ""}`}
                     onClick={() => rollAll()}
-                    disabled={lodingRoll}
+                    disabled={checkLoading}
                   >
                     <span className="product__start">Start</span>
                   </button>
@@ -318,7 +309,7 @@ const Grappage = () => {
 
         {loading && <LoadingModal />}
 
-        {showModal && (
+        {showModals && (
           <div className="modal__grap">
             <div className="modal__product">
               <div className="single__product">
@@ -332,7 +323,7 @@ const Grappage = () => {
                 </div>
                 <div className="product__image">
                   <div className="image__">
-                    <img src={items?.photo[0]?.downloadUrl} alt="" />
+                  {items && items?.photo[0]  &&   <img src={items?.photo[0]?.downloadUrl} alt="" /> }
                   </div>
 
                   <div className="product__detail">
