@@ -211,6 +211,7 @@ class ProductRepository {
     return records.map((record) => ({
       id: record.id,
       label: record.title,
+      price : record.amount
     }));
   }
 

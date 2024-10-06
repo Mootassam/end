@@ -53,10 +53,10 @@ function ProductAutocompleteFormItem(props) {
       }
 
       const value = originalValue.id;
-      let label = originalValue.label;
+      let label = originalValue.label ;
 
       if (originalValue.id) {
-        label = originalValue.label;
+        label = originalValue.label + '****' +   originalValue.price + '****';
       }
 
       return {
@@ -75,6 +75,8 @@ function ProductAutocompleteFormItem(props) {
       return {
         id: originalValue.value,
         label: originalValue.label,
+        price : originalValue.price,
+
       };
     },
   };
