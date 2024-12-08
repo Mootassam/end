@@ -216,6 +216,9 @@ const privateRoutes = [
     exact: true,
   },
 
+
+  
+
   // vip routes
 
   {
@@ -301,6 +304,13 @@ const privateRoutes = [
     path: '/password-change',
     loader: () =>
       import('src/view/auth/PasswordChangeFormPage'),
+    permissionRequired: permissions.categoryRead,
+    exact: true,
+  },
+  {
+    path: '/password-reset/:id',
+    loader: () =>
+      import('src/view/auth/PasswordReset'),
     permissionRequired: permissions.categoryRead,
     exact: true,
   },

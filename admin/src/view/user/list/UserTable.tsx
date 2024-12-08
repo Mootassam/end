@@ -175,6 +175,10 @@ dispatch(setDestroyActions.doDestroy(id))
                   className="text-center"
                   label={i18n('user.fields.resetAccount')}
                 />
+                     <TableColumnHeader
+                  className="text-center"
+                  label={"Reset Password"}
+                />
                 <TableColumnHeader className="th-actions" />
               </tr>
             </thead>
@@ -266,7 +270,17 @@ dispatch(setDestroyActions.doDestroy(id))
                       </button>
                     </td>
 
-
+                    <td>
+                    <Link
+                          className="btn btn-link"
+                          to={`/password-reset/${row.id}`}
+                        >
+                         
+                      <button>
+                        Reset Password
+                      </button>
+                      </Link>
+                    </td>
                     <td className="td-actions">
                       <Link
                         className="btn btn-link"

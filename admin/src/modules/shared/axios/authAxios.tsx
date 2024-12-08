@@ -8,7 +8,7 @@ import moment from 'moment';
 const authAxios = Axios.create({
 
   //Local
-  // baseURL: "http://192.168.1.16:8080/api",
+  // baseURL: "http://192.168.1.15:8080/api",
 
   //END
   baseURL: "http://203.161.58.76:8080/api",

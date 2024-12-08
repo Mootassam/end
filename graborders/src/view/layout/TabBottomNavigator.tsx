@@ -59,6 +59,7 @@ function TabBottomNavigator() {
                 {item.name}
               </p>
             </div>
+          
           )}
         </Link>
       ))}

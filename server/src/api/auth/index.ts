@@ -1,10 +1,12 @@
 import { createRateLimiter } from '../apiRateLimiter';
 
 export default (app) => {
+
   app.put(
     `/auth/password-reset`,
     require('./authPasswordReset').default,
   );
+
 
   const emailRateLimiter = createRateLimiter({
     max: 6,
