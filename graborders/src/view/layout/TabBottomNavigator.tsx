@@ -46,9 +46,13 @@ function TabBottomNavigator() {
           style={{ color: "grey", textDecoration: "none" }}
         >
           {item.path === "/grap" ? (
-            <div className="grap__cirlce">
-              <i className="fa fa-bolt white "></i>
+            <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+              <div className="grap__cirlce">
+                <i className="fa fa-bolt white "></i>
+              </div>
+              <span style={{ position: 'relative', top: '-15px' }}>Start</span>
             </div>
+
           ) : (
             <div className="singleTab">
               <i
@@ -58,8 +62,9 @@ function TabBottomNavigator() {
               <p className={`text__link ${isActive(item.path) && "active"}`}>
                 {item.name}
               </p>
+
             </div>
-          
+
           )}
         </Link>
       ))}
