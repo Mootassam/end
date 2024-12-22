@@ -215,6 +215,50 @@ class ProductRepository {
     }));
   }
 
+  static async findAllAutocompleteCombo(search, limit, options: IRepositoryOptions) {
+    const currentTenant = MongooseRepository.getCurrentTenant(options);
+
+    let criteriaAnd: Array<any> = [
+      {
+        tenant: currentTenant.id,
+        combo:true,
+      },
+    ];
+
+    if (search) {
+      criteriaAnd.push({
+        $or: [
+          {
+            _id: MongooseQueryUtils.uuid(search),
+          },
+          {
+            titre: {
+              $regex: MongooseQueryUtils.escapeRegExp(search),
+              $options: "i",
+            },
+      
+          },
+        ],
+      });
+    }
+
+    const sort = MongooseQueryUtils.sort("titre_ASC");
+    const limitEscaped = Number(limit || 0) || undefined;
+
+    const criteria = { $and: criteriaAnd };
+
+    const records = await Product(options.database)
+      .find(criteria)
+      .limit(limitEscaped)
+      .sort(sort);
+
+    return records.map((record) => ({
+      id: record.id,
+      label: record.title,
+      price : record.amount
+    }));
+  }
+
   static async _createAuditLog(action, id, data, options: IRepositoryOptions) {
     await AuditLogRepository.log(
       {

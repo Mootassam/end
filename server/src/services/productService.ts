@@ -107,6 +107,11 @@ try {
     return ProductRepository.findAllAutocomplete(search, limit, this.options);
   }
 
+  async productAutocompletecombo(search, limit) {
+    return ProductRepository.findAllAutocompleteCombo(search, limit, this.options);
+  }
+
+
   async findAndCountAll(args) {
     return ProductRepository.findAndCountAll(args, this.options);
   }

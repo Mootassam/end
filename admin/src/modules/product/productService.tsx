@@ -111,4 +111,25 @@ export default class ProductService {
 
     return response.data;
   }
+
+
+  static async listAutocompleteCombo(query, limit) {
+    const params = {
+      query,
+      limit,
+    };
+    const tenantId = AuthCurrentTenant.get();
+    const response = await authAxios.get(
+      `/tenant/${tenantId}/product/autocomplete/combo`,
+      {
+        params,
+      },
+    );
+
+    return response.data;
+  }
+
+
+ 
+
 }

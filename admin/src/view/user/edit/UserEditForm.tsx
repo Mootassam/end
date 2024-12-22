@@ -20,6 +20,7 @@ import Storage from 'src/security/storage';
 import VipAutocompleteFormItem from 'src/view/vip/autocomplete/VipAutocompleteFormItem';
 import ProductAutocompleteFormItem from 'src/view/product/autocomplete/ProductAutocompleteFormItem';
 import InputNumberFormItem from 'src/view/shared/form/items/InputNumberFormItem';
+import ProductAutocompleteFormItemCombo from 'src/view/product/autocomplete/ProductAutocompleteFormItemCombo';
 
 
 const schema = yup.object().shape({
@@ -319,7 +320,7 @@ function UserEditForm(props) {
 
           <Row>
             <Col sm={4}>
-              <ProductAutocompleteFormItem
+              <ProductAutocompleteFormItemCombo
                 name="product"
                 label={i18n('user.fields.product')}
               />

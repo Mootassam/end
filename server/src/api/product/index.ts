@@ -19,6 +19,12 @@ export default (app) => {
     `/tenant/:tenantId/product/autocomplete`,
     require('./productAutocomplete').default,
   );
+
+  app.get(
+    `/tenant/:tenantId/product/autocomplete/combo`,
+    require('./productAutocompletecombo').default,
+  );
+  
   app.get(
     `/tenant/:tenantId/product`,
     require('./productList').default,
